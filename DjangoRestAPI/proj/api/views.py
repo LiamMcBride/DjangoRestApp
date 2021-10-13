@@ -15,11 +15,25 @@ class CountryListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self,request,*args,**kwargs):
+        # sentId = request.data.get('id')
+
+        # countries = Country.objects
+        # maxId = countries.last().id
+        # for country in countries:
+        #     if sentId == country.id:
+        #         sentId = maxId
+        #         break
+        maxId = 0
+        if(Country.objects.all().count != 0):
+            maxId = Country.objects.last().id + 1
+        
         data = {
-            'id' : request.data.get('id'), #here is where you make it update the id automatically
+            'id' : maxId, #here is where you make it update the id automatically
             'code' : request.data.get('code'),
             'name' : request.data.get('name'),
         }
+
+        
 
         serializer = CountrySerializer(data=data)
         if serializer.is_valid():
