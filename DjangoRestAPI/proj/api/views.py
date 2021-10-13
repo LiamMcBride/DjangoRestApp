@@ -1,12 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse
 from rest_framework import status
-from rest_framework import permissions
 from proj.models import Proj, Country, State
 from .serializers import ProjSerializer, CountrySerializer, StateSerializer
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from rest_framework.decorators import api_view
 
 class CountryListApiView(APIView):
     def get(self,request,*args,**kwargs):
@@ -15,20 +12,10 @@ class CountryListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self,request,*args,**kwargs):
-        # sentId = request.data.get('id')
-
-        # countries = Country.objects
-        # maxId = countries.last().id
-        # for country in countries:
-        #     if sentId == country.id:
-        #         sentId = maxId
-        #         break
-        maxId = 0
-        if(Country.objects.all().count != 0):
-            maxId = Country.objects.last().id + 1
+        maxId = Country.objects.last().id + 1
         
         data = {
-            'id' : maxId, #here is where you make it update the id automatically
+            'id' : maxId,
             'code' : request.data.get('code'),
             'name' : request.data.get('name'),
         }
@@ -57,8 +44,10 @@ class StateListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self,request,*args,**kwargs):
+        maxId = State.objects.last().id + 1
+
         data = {
-            'id' : request.data.get('id'), #here is where you make it update the id automatically
+            'id' : maxId,
             'code' : request.data.get('code'),
             'name' : request.data.get('name'),
             'countryId' : request.data.get('countryId'),
