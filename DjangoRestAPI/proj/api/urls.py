@@ -10,5 +10,5 @@ urlpatterns = [
     path('', ProjListApiView.as_view()),
     path('countries/', CountryListApiView.as_view()),
     path('states/', StateListApiView.as_view()),
-    path('countries/<int:countryId>/states/', CountryListApiView.statesById),
+    path('countries/<str:countryId>/states/', CountryListApiView.statesById),
 ]

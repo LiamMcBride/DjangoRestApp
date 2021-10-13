@@ -31,7 +31,9 @@ class CountryListApiView(APIView):
     
     @api_view(('GET',))
     def statesById(request, countryId):
-        state = State.objects.filter(countryId=countryId)
+        country = Country.objects.filter(code=countryId.upper())
+        newId = country.first().id
+        state = State.objects.filter(countryId=newId)
         serializer = StateSerializer(state, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
