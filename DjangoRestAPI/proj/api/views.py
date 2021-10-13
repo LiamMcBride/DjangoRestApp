@@ -8,18 +8,6 @@ from .serializers import ProjSerializer, CountrySerializer, StateSerializer
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
-
-@api_view(('GET',))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
-def statesByCountry(request, countryId):
-    #return HttpResponse("<h1>" + str(countryId) + "</h1>")
-    states = State.objects.filter(countryId=countryId)
-    serializer = StateSerializer(states, many=True)
-    
-    return Response(serializer.data, status=status.HTTP_200_OK)
-    #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CountryListApiView(APIView):
     def get(self,request,*args,**kwargs):
         country = Country.objects
@@ -41,13 +29,7 @@ class CountryListApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @api_view(('GET',))
-    #@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
     def statesById(request, countryId):
-        
-        # states = State.objects.filter(countryId= countryId)
-        # serializer = StateSerializer(states, many=True)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
-        #return HttpResponse("<h1>{}</h1>".format(countryId))
         state = State.objects.filter(countryId=countryId)
         serializer = StateSerializer(state, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
